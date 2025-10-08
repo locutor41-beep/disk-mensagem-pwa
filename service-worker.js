@@ -1,9 +1,10 @@
-const CACHE = 'disk-mensagem-v1';
+const CACHE = 'disk-mensagem-v3';
 const ASSETS = [
-  '/', '/index.html', '/admin.html',
+  '/', '/index.html',
+  '/cliente.html', '/admin.html',
   '/manifest.webmanifest',
   '/icons/icon-192.png', '/icons/icon-512.png',
-  '/app.js' // adicione também seus CSS/JS principais
+  '/styles.css', '/app.js'
 ];
 
 self.addEventListener('install', e => {
