@@ -1,0 +1,13 @@
+# Como abrir diretamente no Google Chrome
+
+## Windows (recomendado para seus clientes)
+- Dê **dois cliques** em **Abrir-no-Chrome-Windows.vbs** (abre sem janelinha).
+  - Alternativa: **Abrir-no-Chrome-Windows.bat** (mostra uma janela rápida).
+- Se o computador **não tiver Chrome**, o arquivo tenta abrir no navegador padrão.
+- Para deixar definitivo: clique com o botão direito no `index.html` → **Abrir com** → **Escolher outro app** → selecione **Google Chrome** → marque **Sempre usar este app** → **OK**.
+
+## macOS
+- Dê dois cliques em **Abrir-no-Chrome-mac.command**.
+  - Se pedir permissão, vá em **Preferências do Sistema → Segurança e Privacidade → Geral** e permita a execução.
+
+Pronto! Assim seus clientes não precisam saber qual app usar.

@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Disk Mensagem Studio Neil Marcos — Admin + Cliente</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#0f172a"/>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand">📣 Disk Mensagem Studio Neil Marcos <span class="badge">MVP Local</span></div>
+      <div class="row">
+        <button id="tabCliente" class="tab-btn active">Cliente</button>
+        <button id="tabAdmin" class="tab-btn">Admin</button>
+      </div>
+    </div>
+
+    <div id="clienteView" class="card">
+      <h2 style="margin-top:0">Faça seu pedido</h2>
+      <div class="grid">
+        <div class="half">
+          <label>Nome de quem vai receber</label>
+          <input id="destinatario" placeholder="Ex: Maria da Silva"/>
+        </div>
+        <div class="half">
+          <label>Nomes de quem está mandando (separe com vírgula)</label>
+          <input id="remetentes" placeholder="Ex: João, Ana, Pedro"/>
+        </div>
+        <div class="full">
+          <label>Endereço (onde será a mensagem)</label>
+          <input id="endereco" placeholder="Rua, número, bairro"/>
+        </div>
+        <div class="half">
+          <label>Cidade</label>
+          <input id="cidade" placeholder="Ex: Paraguaçu Paulista"/>
+        </div>
+        <div class="half row">
+          <div style="flex:1">
+            <label>Dia</label>
+            <input type="date" id="dia"/>
+          </div>
+          <div style="flex:1">
+            <label>Hora</label>
+            <input type="time" id="hora"/>
+          </div>
+        </div>
+        <div class="half">
+          <label>Link da 1ª música (só trecho)</label>
+          <input id="musica1" placeholder="https://... (mp3 ou streaming)"/>
+        </div>
+        <div class="half">
+          <label>Link da música final (toca inteira)</label>
+          <input id="musica2" placeholder="https://... (mp3 ou streaming)"/>
+        </div>
+        <div class="full">
+          <label>Escreva sua mensagem (opcional se for escolher modelo)</label>
+          <textarea id="mensagem" placeholder="Digite a mensagem do seu jeito..."></textarea>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="row" style="justify-content: space-between">
+          <strong>Ou escolha um modelo pronto:</strong>
+          <button class="secondary" id="btnRecarregarModelos">Recarregar modelos</button>
+        </div>
+        <div class="row">
+          <select id="selCategoria" style="max-width:260px"></select>
+          <select id="selTemplate" style="flex:1"></select>
+          <button id="btnVerTemplate" class="secondary">Ver texto</button>
+        </div>
+        <div id="previewTemplate" class="card hidden" style="margin-top:10px"></div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="row" style="justify-content: space-between; align-items: flex-end;">
+          <div>
+            <div><strong>Pagamento por Pix</strong></div>
+            <small class="muted">Cidade padrão: <span id="cidadePadraoLabel"></span>. Valor: <span id="valorLabel"></span>.</small>
+          </div>
+          <button id="btnCalcularPix" class="secondary">Calcular Pix</button>
+        </div>
+        <div class="grid" style="margin-top:10px">
+          <div class="third">
+            <label>Chave Pix</label>
+            <input id="pixKey" readonly/>
+          </div>
+          <div class="third">
+            <label>Valor</label>
+            <input id="pixValor" readonly/>
+          </div>
+          <div class="third">
+            <label>Pix "copia e cola"</label>
+            <textarea id="pixCopiaCola" readonly></textarea>
+          </div>
+          <div class="full row" style="align-items:flex-start;">
+            <div id="qrContainer" class="card" style="width: 230px; height:230px; display:flex; align-items:center; justify-content:center;">QR aqui</div>
+            <div>
+              <button id="btnCopiar" class="secondary">Copiar "copia e cola"</button>
+              <div class="footer">Se a cidade não for <span id="cidadePadraoLabel2"></span>, o valor pode ser diferente. <strong>Consulte-nos.</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:12px">
+        <button id="btnEnviar">Enviar pedido</button>
+        <small class="muted">Ao enviar, você concorda que o pedido será analisado e confirmado via contato.</small>
+      </div>
+    </div>
+
+    <div id="adminView" class="card hidden">
+      <div id="adminLogin">
+        <h2 style="margin-top:0">Admin</h2>
+        <div class="row">
+          <input id="adminPass" type="password" placeholder="Senha do admin"/>
+          <button id="btnEntrar">Entrar</button>
+        </div>
+      </div>
+
+      <div id="adminApp" class="hidden">
+        <div class="row" style="justify-content: space-between; align-items:center;">
+          <h2 style="margin:0">Painel do Admin</h2>
+          <div class="row">
+            <button class="secondary" id="btnSom">🔔 Som: <span id="somStatus">ON</span></button>
+            <button class="secondary" id="btnSair">Sair</button>
+          </div>
+        </div>
+
+        <div class="tabs" style="margin-top:8px">
+          <button class="tab-btn active" id="tabPedidos">Pedidos</button>
+          <button class="tab-btn" id="tabModelos">Categorias & Modelos</button>
+          <button class="tab-btn" id="tabConfig">Configurações</button>
+        </div>
+
+        <div id="viewPedidos">
+          <div class="row" style="gap:8px; align-items: flex-end;">
+            <div>
+              <label>Filtro por data</label>
+              <input type="date" id="filtroData"/>
+            </div>
+            <button class="secondary" id="btnAtualizar">Atualizar</button>
+          </div>
+          <div style="margin-top:12px; overflow:auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Quando</th>
+                  <th>Destinatário</th>
+                  <th>Remetentes</th>
+                  <th>Endereço</th>
+                  <th>Dia/Hora</th>
+                  <th>Cidade</th>
+                  <th>Valor</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tbPedidos"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="viewModelos" class="hidden">
+          <div class="grid">
+            <div class="third">
+              <h3>Categorias</h3>
+              <div class="row">
+                <input id="novaCategoria" placeholder="Nome da categoria"/>
+                <button id="btnAddCategoria">Adicionar</button>
+              </div>
+              <div id="listaCategorias" class="list" style="margin-top:10px"></div>
+            </div>
+            <div class="two-thirds" style="grid-column: span 9;">
+              <h3>Modelos</h3>
+              <div class="grid">
+                <div class="half">
+                  <label>Título</label>
+                  <input id="templateTitulo"/>
+                </div>
+                <div class="half">
+                  <label>Categoria</label>
+                  <select id="templateCategoria"></select>
+                </div>
+                <div class="full">
+                  <label>Conteúdo do modelo</label>
+                  <textarea id="templateConteudo" placeholder="Cole aqui o texto (pode copiar do Word)"></textarea>
+                </div>
+              </div>
+              <div class="row" style="margin-top:8px;">
+                <button id="btnSalvarTemplate">Salvar/Atualizar</button>
+                <button class="danger" id="btnExcluirTemplate">Excluir</button>
+              </div>
+              <hr/>
+              <div id="listaTemplates" class="list"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="viewConfig" class="hidden">
+          <div class="grid">
+            <div class="third">
+              <label>Cidade padrão (valor fixo)</label>
+              <input id="cfgCidade"/>
+            </div>
+            <div class="third">
+              <label>Valor (R$) nessa cidade</label>
+              <input id="cfgValor" type="number" step="0.01"/>
+            </div>
+            <div class="third">
+              <label>Chave Pix</label>
+              <input id="cfgPix"/>
+            </div>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <button id="btnSalvarCfg">Salvar</button>
+            <small class="muted">Essas configurações também são usadas no app do cliente.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">© 2025 Disk Mensagem Studio Neil Marcos — MVP. Este app funciona localmente e pode usar Supabase para tempo real.</div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+<script>
+ if ("serviceWorker" in navigator) {
+   window.addEventListener("load", () => {
+     navigator.serviceWorker.register("sw.js").catch(()=>{});
+   });
+ }
+</script>
+</body>
+</html>
