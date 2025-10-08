@@ -1,7 +1,7 @@
 {
   "name": "Disk Mensagem Studio Neil Marcos",
   "short_name": "DiskMensagem",
-  "start_url": "/admin.html",
+  "start_url": "/cliente.html",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
